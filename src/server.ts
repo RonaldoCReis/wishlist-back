@@ -23,6 +23,14 @@ app.register(fastifySwagger, {
       description: "Documentação da API de exemplo utilizando Fastify",
       version: "1.0.0",
     },
+    components: {
+      securitySchemes: {
+        bearerAuth: {
+          type: "http",
+          scheme: "bearer",
+        },
+      },
+    },
   },
   transform: jsonSchemaTransform,
 });
@@ -35,7 +43,10 @@ const protectedRoutes: FastifyPluginCallback = async (app) => {
       reply.status(401);
       done(new Error("Unauthorized"));
     }
+    done();
   });
+
+  app.register(UserController, { prefix: "/users" });
 };
 
 const publicRoutes: FastifyPluginCallback = async (app) => {
@@ -43,12 +54,7 @@ const publicRoutes: FastifyPluginCallback = async (app) => {
     routePrefix: "/docs",
   });
 
-  app.register(UserController, { prefix: "/users" });
   app.register(Webhooks, { prefix: "/webhooks" });
-
-  // app.get("/", (req, res) => {
-  //   res.send("Hello World!");
-  // });
 };
 
 app.register(protectedRoutes);
