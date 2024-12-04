@@ -1,14 +1,16 @@
+import "dotenv/config";
 import fastifySwagger from "@fastify/swagger";
 import fastifySwaggerUi from "@fastify/swagger-ui";
-import fastify from "fastify";
+import Fastify, { FastifyPluginCallback } from "fastify";
 import {
   jsonSchemaTransform,
   serializerCompiler,
   validatorCompiler,
 } from "fastify-type-provider-zod";
 import { UserController } from "./domains/user/user.controller";
+import { clerkPlugin, getAuth } from "@clerk/fastify";
 
-const app = fastify();
+const app = Fastify();
 
 app.setValidatorCompiler(validatorCompiler);
 app.setSerializerCompiler(serializerCompiler);
@@ -24,15 +26,30 @@ app.register(fastifySwagger, {
   transform: jsonSchemaTransform,
 });
 
-app.register(fastifySwaggerUi, {
-  routePrefix: "/docs",
-});
+const protectedRoutes: FastifyPluginCallback = async (app) => {
+  app.register(clerkPlugin);
+  app.addHook("preHandler", (request, reply, done) => {
+    const auth = getAuth(request);
+    if (!auth.userId) {
+      reply.status(401).send({ message: "Unauthorized" });
+      return;
+    }
+    done();
+  });
+  app.register(UserController);
+};
 
-app.get("/", (req, res) => {
-  res.send("Hello World!");
-});
+const publicRoutes: FastifyPluginCallback = async (app) => {
+  app.register(fastifySwaggerUi, {
+    routePrefix: "/docs",
+  });
+  app.get("/", (req, res) => {
+    res.send("Hello World!");
+  });
+};
 
-app.register(UserController);
+app.register(protectedRoutes);
+app.register(publicRoutes);
 
 app.listen({ port: 3333, host: "0.0.0.0" }, () => {
   console.log("Server is running on http://localhost:3333");
