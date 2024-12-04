@@ -1,6 +1,7 @@
 services:
   postgres:
     image: "postgres"
+    container_name: postgres
     ports:
       - "5432:5432"
     environment:
@@ -11,6 +12,15 @@ services:
       - wishlist_pg_data:/var/lib/postgresql/data
   app:
     build: .
+    develop:
+      watch:
+        - action: sync
+          path: ./src
+          target: /app/src
+          ignore:
+            - node_modules/
+        - action: rebuild
+          path: package.json
     ports:
       - "3333:3333"
     depends_on:

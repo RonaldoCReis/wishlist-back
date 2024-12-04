@@ -1,0 +1,50 @@
+import { UserRepository } from "./user.repository";
+import { NewUser, UpdateUser, User } from "./user.schema";
+
+const findAll = async () => await UserRepository.findAll();
+
+const findById = async (id: User["id"]) => {
+  const user = await UserRepository.findById(id);
+  if (!user) {
+    throw new Error("User not found");
+  }
+  return user;
+};
+
+const create = async (data: NewUser) => {
+  const user = await UserRepository.findById(data.id);
+  if (user) {
+    throw new Error("User already exists");
+  }
+  const newUser = await UserRepository.create(data);
+
+  return newUser;
+};
+
+const remove = async (id: User["id"]) => {
+  const user = await UserRepository.findById(id);
+  if (!user) {
+    throw new Error("User not found");
+  }
+  const deletedUser = await UserRepository.remove(id);
+
+  return deletedUser;
+};
+
+const update = async (id: User["id"], data: UpdateUser) => {
+  const user = await UserRepository.findById(id);
+  if (!user) {
+    throw new Error("User not found");
+  }
+  const updatedUser = await UserRepository.update(id, data);
+
+  return updatedUser;
+};
+
+export const UserService = {
+  findAll,
+  findById,
+  create,
+  remove,
+  update,
+};
