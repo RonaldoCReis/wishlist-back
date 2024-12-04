@@ -6,7 +6,7 @@ import { UserService } from "./user.service";
 
 export const UserController = async (app: FastifyInstance) => {
   app.withTypeProvider<ZodTypeProvider>().get(
-    "/users",
+    "/",
     {
       schema: {
         summary: "List all users",
@@ -23,7 +23,7 @@ export const UserController = async (app: FastifyInstance) => {
   );
 
   app.withTypeProvider<ZodTypeProvider>().get(
-    "/users/:id",
+    "/:id",
     {
       schema: {
         summary: "Get user by ID",
@@ -50,7 +50,7 @@ export const UserController = async (app: FastifyInstance) => {
   );
 
   app.withTypeProvider<ZodTypeProvider>().post(
-    "/users",
+    "/",
     {
       schema: {
         summary: "Create a new user",
@@ -75,7 +75,7 @@ export const UserController = async (app: FastifyInstance) => {
   );
 
   app.withTypeProvider<ZodTypeProvider>().delete(
-    "/users/:id",
+    "/:id",
     {
       schema: {
         summary: "Delete user by ID",
@@ -102,7 +102,7 @@ export const UserController = async (app: FastifyInstance) => {
   );
 
   app.withTypeProvider<ZodTypeProvider>().put(
-    "/users/:id",
+    "/:id",
     {
       schema: {
         summary: "Update user by ID",

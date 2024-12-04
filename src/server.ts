@@ -1,4 +1,4 @@
-import "dotenv/config";
+// import "dotenv/config";
 import fastifySwagger from "@fastify/swagger";
 import fastifySwaggerUi from "@fastify/swagger-ui";
 import Fastify, { FastifyPluginCallback } from "fastify";
@@ -9,6 +9,7 @@ import {
 } from "fastify-type-provider-zod";
 import { UserController } from "./domains/user/user.controller";
 import { clerkPlugin, getAuth } from "@clerk/fastify";
+import { Webhooks } from "./webhooks/webhooks";
 
 const app = Fastify();
 
@@ -31,21 +32,23 @@ const protectedRoutes: FastifyPluginCallback = async (app) => {
   app.addHook("preHandler", (request, reply, done) => {
     const auth = getAuth(request);
     if (!auth.userId) {
-      reply.status(401).send({ message: "Unauthorized" });
-      return;
+      reply.status(401);
+      done(new Error("Unauthorized"));
     }
-    done();
   });
-  app.register(UserController);
 };
 
 const publicRoutes: FastifyPluginCallback = async (app) => {
   app.register(fastifySwaggerUi, {
     routePrefix: "/docs",
   });
-  app.get("/", (req, res) => {
-    res.send("Hello World!");
-  });
+
+  app.register(UserController, { prefix: "/users" });
+  app.register(Webhooks, { prefix: "/webhooks" });
+
+  // app.get("/", (req, res) => {
+  //   res.send("Hello World!");
+  // });
 };
 
 app.register(protectedRoutes);

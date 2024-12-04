@@ -2,7 +2,9 @@ import z from "zod";
 
 export const UpdateUser = z.object({
   email: z.string().email(),
-  name: z.string(),
+  firstName: z.string().nullish(),
+  lastName: z.string().nullish(),
+  profileImageUrl: z.string().nullish(),
 });
 
 export type UpdateUser = z.infer<typeof UpdateUser>;
