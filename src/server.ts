@@ -23,8 +23,8 @@ app.setSerializerCompiler(serializerCompiler);
 app.register(fastifySwagger, {
   openapi: {
     info: {
-      title: "API de Exemplo",
-      description: "Documentação da API de exemplo utilizando Fastify",
+      title: "Wishlist API",
+      description: "Documentação da API de wishlist utilizando Fastify",
       version: "1.0.0",
     },
     components: {
