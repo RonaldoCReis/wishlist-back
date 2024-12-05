@@ -21,8 +21,7 @@ model User {
   profileImageUrl String?  @map("profile_image_url")
   createdAt       DateTime @default(now()) @map("created_at")
   updatedAt       DateTime @updatedAt @map("updated_at")
-
-  List List[]
+  lists           List[]
 
   @@map("users")
 }
@@ -34,7 +33,7 @@ model List {
   updatedAt DateTime  @updatedAt @map("updated_at")
   userId    String    @map("user_id")
   User      User      @relation(fields: [userId], references: [id])
-  Product   Product[]
+  products  Product[]
 
   @@map("lists")
 }
@@ -48,8 +47,8 @@ model Product {
   store     String
   createdAt DateTime @default(now()) @map("created_at")
   updatedAt DateTime @updatedAt @map("updated_at")
-  listId    String   @map("list_id")
-  List      List     @relation(fields: [listId], references: [id])
+  listId    String?  @map("list_id")
+  List      List?    @relation(fields: [listId], references: [id])
 
   @@map("products")
 }

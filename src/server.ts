@@ -10,6 +10,10 @@ import {
 import { UserController } from "./domains/user/user.controller";
 import { clerkPlugin, getAuth } from "@clerk/fastify";
 import { Webhooks } from "./webhooks/webhooks";
+import {
+  ListController,
+  PublicListController,
+} from "./domains/list/list.controller";
 
 const app = Fastify();
 
@@ -47,6 +51,7 @@ const protectedRoutes: FastifyPluginCallback = async (app) => {
   });
 
   app.register(UserController, { prefix: "/users" });
+  app.register(ListController, { prefix: "/lists" });
 };
 
 const publicRoutes: FastifyPluginCallback = async (app) => {
@@ -55,6 +60,7 @@ const publicRoutes: FastifyPluginCallback = async (app) => {
   });
 
   app.register(Webhooks, { prefix: "/webhooks" });
+  app.register(PublicListController, { prefix: "/lists" });
 };
 
 app.register(protectedRoutes);
