@@ -5,8 +5,9 @@ import { ProductService } from "./product.service";
 import { List } from "../list/list.schema";
 import z from "zod";
 import { getAuth } from "@clerk/fastify";
-import { Error } from "../../utils/errorSchema";
+import { Error } from "../../errors/errorSchema";
 import { ListService } from "../list/list.service";
+import { Forbidden, Unauthorized } from "../../errors/classes";
 
 export const ProductController = async (app: FastifyInstance) => {
   app.withTypeProvider<ZodTypeProvider>().get(
@@ -66,13 +67,13 @@ export const ProductController = async (app: FastifyInstance) => {
     async (req, res) => {
       const { userId } = getAuth(req);
       if (!userId) {
-        return res.status(401).send({ message: "Unauthorized" });
+        throw new Unauthorized();
       }
 
       const list = await ListService.findById(req.body.listId);
 
       if (list.userId !== userId) {
-        return res.status(401).send({ message: "Unauthorized" });
+        throw new Forbidden("This list does not belong to you");
       }
       const newProduct = await ProductService.create(req.body);
       res.status(201).send(newProduct);
@@ -98,13 +99,13 @@ export const ProductController = async (app: FastifyInstance) => {
     async (req, res) => {
       const { userId } = getAuth(req);
       if (!userId) {
-        return res.status(401).send({ message: "Unauthorized" });
+        throw new Unauthorized();
       }
       const product = await ProductService.findById(req.params.id);
       const list = await ListService.findById(product.listId);
 
       if (list.userId !== userId) {
-        return res.status(401).send({ message: "Unauthorized" });
+        throw new Forbidden("This product does not belong to you");
       }
       const deletedProduct = await ProductService.remove(req.params.id);
       res.send(deletedProduct);
@@ -131,12 +132,12 @@ export const ProductController = async (app: FastifyInstance) => {
     async (req, res) => {
       const { userId } = getAuth(req);
       if (!userId) {
-        return res.status(401).send({ message: "Unauthorized" });
+        throw new Unauthorized();
       }
       const product = await ProductService.findById(req.params.id);
       const list = await ListService.findById(product.listId);
       if (list.userId !== userId) {
-        return res.status(401).send({ message: "Unauthorized" });
+        throw new Forbidden("This product does not belong to you");
       }
       const updatedProduct = await ProductService.update(
         req.params.id,

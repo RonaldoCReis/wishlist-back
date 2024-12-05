@@ -1,3 +1,4 @@
+import { BadRequest, NotFound } from "../../errors/classes";
 import { UserRepository } from "./user.repository";
 import { NewUser, UpdateUser, User } from "./user.schema";
 
@@ -6,7 +7,7 @@ const findAll = async () => await UserRepository.findAll();
 const findById = async (id: User["id"]) => {
   const user = await UserRepository.findById(id);
   if (!user) {
-    throw new Error("User not found");
+    throw new NotFound("User not found");
   }
   return user;
 };
@@ -14,7 +15,7 @@ const findById = async (id: User["id"]) => {
 const create = async (data: NewUser) => {
   const user = await UserRepository.findById(data.id);
   if (user) {
-    throw new Error("User already exists");
+    throw new BadRequest("User already exists");
   }
   const newUser = await UserRepository.create(data);
 
@@ -24,7 +25,7 @@ const create = async (data: NewUser) => {
 const remove = async (id: User["id"]) => {
   const user = await UserRepository.findById(id);
   if (!user) {
-    throw new Error("User not found");
+    throw new NotFound("User not found");
   }
   const deletedUser = await UserRepository.remove(id);
 
@@ -34,7 +35,7 @@ const remove = async (id: User["id"]) => {
 const update = async (id: User["id"], data: UpdateUser) => {
   const user = await UserRepository.findById(id);
   if (!user) {
-    throw new Error("User not found");
+    throw new NotFound("User not found");
   }
   const updatedUser = await UserRepository.update(id, data);
 

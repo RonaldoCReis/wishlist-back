@@ -3,9 +3,10 @@ import { ZodTypeProvider } from "fastify-type-provider-zod";
 import { List, Lists, NewList, UpdateList } from "./list.schema";
 import { ListService } from "./list.service";
 import { getAuth } from "@clerk/fastify";
-import { Error } from "../../utils/errorSchema";
+import { Error } from "../../errors/errorSchema";
 import z from "zod";
 import { Products } from "../product/product.schema";
+import { Forbidden, Unauthorized } from "../../errors/classes";
 
 export const ListController = async (app: FastifyInstance) => {
   app.withTypeProvider<ZodTypeProvider>().get(
@@ -20,7 +21,7 @@ export const ListController = async (app: FastifyInstance) => {
     async (req, res) => {
       const { userId } = getAuth(req);
       if (!userId) {
-        return res.status(401).send({ message: "Unauthorized" });
+        throw new Unauthorized();
       }
       const lists = await ListService.findAll(userId);
       res.send(lists);
@@ -40,7 +41,7 @@ export const ListController = async (app: FastifyInstance) => {
     async (req, res) => {
       const { userId } = getAuth(req);
       if (!userId) {
-        return res.status(401).send({ message: "Unauthorized" });
+        throw new Unauthorized();
       }
       const newList = await ListService.create({ ...req.body, userId });
       res.status(201).send(newList);
@@ -62,22 +63,16 @@ export const ListController = async (app: FastifyInstance) => {
     async (req, res) => {
       const { userId } = getAuth(req);
       if (!userId) {
-        return res.status(401).send({ message: "Unauthorized" });
+        throw new Unauthorized();
       }
-      try {
-        const { userId: listUserId } = await ListService.findById(
-          req.params.id
-        );
+      const { userId: listUserId } = await ListService.findById(req.params.id);
 
-        if (listUserId !== userId) {
-          return res.status(401).send({ message: "Unauthorized" });
-        }
-
-        const deletedList = await ListService.remove(req.params.id);
-        res.status(200).send(deletedList);
-      } catch (error) {
-        res.status(404).send({ message: (error as Error).message });
+      if (listUserId !== userId) {
+        throw new Forbidden("This list does not belong to you");
       }
+
+      const deletedList = await ListService.remove(req.params.id);
+      res.status(200).send(deletedList);
     }
   );
 
@@ -97,22 +92,17 @@ export const ListController = async (app: FastifyInstance) => {
     async (req, res) => {
       const { userId } = getAuth(req);
       if (!userId) {
-        return res.status(401).send({ message: "Unauthorized" });
+        throw new Unauthorized();
       }
-      try {
-        const { userId: listUserId } = await ListService.findById(
-          req.params.id
-        );
 
-        if (listUserId !== userId) {
-          return res.status(401).send({ message: "Unauthorized" });
-        }
+      const { userId: listUserId } = await ListService.findById(req.params.id);
 
-        const updatedList = await ListService.update(req.params.id, req.body);
-        res.status(200).send(updatedList);
-      } catch (error) {
-        res.status(404).send({ message: (error as Error).message });
+      if (listUserId !== userId) {
+        throw new Forbidden("This list does not belong to you");
       }
+
+      const updatedList = await ListService.update(req.params.id, req.body);
+      res.status(200).send(updatedList);
     }
   );
   app.withTypeProvider<ZodTypeProvider>().get(
@@ -133,13 +123,8 @@ export const ListController = async (app: FastifyInstance) => {
       },
     },
     async (req, res) => {
-      try {
-        const list = await ListService.findById(req.params.id);
-
-        res.status(200).send(list);
-      } catch (error) {
-        res.status(404).send({ message: (error as Error).message });
-      }
+      const list = await ListService.findById(req.params.id);
+      res.status(200).send(list);
     }
   );
 };

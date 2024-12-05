@@ -9,6 +9,7 @@ import {
 } from "./clerk.schema";
 import z from "zod";
 import { UserService } from "../../domains/user/user.service";
+import { BadRequest } from "../../errors/classes";
 
 export const ClerkWebhook = async (app: FastifyInstance) => {
   app.withTypeProvider<ZodTypeProvider>().post(
@@ -29,7 +30,7 @@ export const ClerkWebhook = async (app: FastifyInstance) => {
       const SIGNING_SECRET = process.env.SIGNING_SECRET;
 
       if (!SIGNING_SECRET) {
-        throw new Error(
+        throw new BadRequest(
           "Error: Please add SIGNING_SECRET from Clerk Dashboard to .env"
         );
       }

@@ -1,3 +1,4 @@
+import { NotFound } from "../../errors/classes";
 import { List } from "../list/list.schema";
 import { ProductRepository } from "./product.repository";
 import { NewProduct, Product, UpdateProduct } from "./product.schema";
@@ -8,7 +9,7 @@ const findAll = async (listId: List["id"]) =>
 const findById = async (id: Product["id"]) => {
   const product = await ProductRepository.findById(id);
   if (!product) {
-    throw new Error("product not found");
+    throw new NotFound("product not found");
   }
   return product;
 };
@@ -21,7 +22,7 @@ const create = async (data: NewProduct) => {
 const remove = async (id: Product["id"]) => {
   const product = await ProductRepository.findById(id);
   if (!product) {
-    throw new Error("product not found");
+    throw new NotFound("product not found");
   }
   const deletedProduct = await ProductRepository.remove(id);
 
@@ -31,7 +32,7 @@ const remove = async (id: Product["id"]) => {
 const update = async (id: Product["id"], data: UpdateProduct) => {
   const product = await ProductRepository.findById(id);
   if (!product) {
-    throw new Error("product not found");
+    throw new NotFound("product not found");
   }
   const updatedProduct = await ProductRepository.update(id, data);
 

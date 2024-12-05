@@ -12,6 +12,7 @@ import { clerkPlugin, getAuth } from "@clerk/fastify";
 import { Webhooks } from "./webhooks/webhooks";
 import { ListController } from "./domains/list/list.controller";
 import { ProductController } from "./domains/product/product.controller";
+import { errorHandler } from "./error-handler";
 
 const app = Fastify();
 
@@ -63,6 +64,8 @@ const publicRoutes: FastifyPluginCallback = async (app) => {
 
 app.register(protectedRoutes);
 app.register(publicRoutes);
+
+app.setErrorHandler(errorHandler);
 
 app.listen({ port: 3333, host: "0.0.0.0" }, () => {
   console.log("Server is running on http://localhost:3333");
