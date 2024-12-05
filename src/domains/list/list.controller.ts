@@ -5,6 +5,7 @@ import { ListService } from "./list.service";
 import { getAuth } from "@clerk/fastify";
 import { Error } from "../../utils/errorSchema";
 import z from "zod";
+import { Products } from "../product/product.schema";
 
 export const ListController = async (app: FastifyInstance) => {
   app.withTypeProvider<ZodTypeProvider>().get(
@@ -114,9 +115,6 @@ export const ListController = async (app: FastifyInstance) => {
       }
     }
   );
-};
-
-export const PublicListController = async (app: FastifyInstance) => {
   app.withTypeProvider<ZodTypeProvider>().get(
     "/:id",
     {
@@ -126,12 +124,18 @@ export const PublicListController = async (app: FastifyInstance) => {
         params: z.object({
           id: z.string(),
         }),
-        response: { 200: List, 404: Error },
+        response: {
+          200: List.extend({
+            products: Products,
+          }),
+          404: Error,
+        },
       },
     },
     async (req, res) => {
       try {
         const list = await ListService.findById(req.params.id);
+
         res.status(200).send(list);
       } catch (error) {
         res.status(404).send({ message: (error as Error).message });

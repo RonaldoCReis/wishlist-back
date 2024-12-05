@@ -5,7 +5,8 @@ import { List, NewList, UpdateList } from "./list.schema";
 const findAll = (userId: User["id"]) =>
   prisma.list.findMany({ where: { userId } });
 
-const findById = (id: List["id"]) => prisma.list.findUnique({ where: { id } });
+const findById = (id: List["id"]) =>
+  prisma.list.findUnique({ where: { id }, include: { products: true } });
 
 const create = (data: NewList) => prisma.list.create({ data });
 

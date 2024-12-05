@@ -8,7 +8,7 @@ const findAll = async (userId: User["id"]) =>
 const findById = async (id: List["id"]) => {
   const list = await ListRepository.findById(id);
   if (!list) {
-    throw new Error("User not found");
+    throw new Error("list not found");
   }
   return list;
 };
