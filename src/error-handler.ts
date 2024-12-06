@@ -1,19 +1,41 @@
 import { FastifyInstance } from "fastify";
-import { ZodError } from "zod";
 import {
   BadRequest,
   Forbidden,
   NotFound,
   Unauthorized,
 } from "./errors/classes";
+import {
+  hasZodFastifySchemaValidationErrors,
+  isResponseSerializationError,
+} from "fastify-type-provider-zod";
 
 type FastifyErrorHandler = FastifyInstance["errorHandler"];
 
 export const errorHandler: FastifyErrorHandler = (error, request, reply) => {
-  if (error instanceof ZodError) {
-    return reply.status(422).send({
-      message: `Error during validation`,
-      errors: error.flatten().fieldErrors,
+  if (hasZodFastifySchemaValidationErrors(error)) {
+    return reply.code(400).send({
+      error: "Response Validation Error",
+      message: "Request doesn't match the schema",
+      statusCode: 400,
+      details: {
+        issues: error.validation,
+        method: request.method,
+        url: request.url,
+      },
+    });
+  }
+
+  if (isResponseSerializationError(error)) {
+    return reply.code(500).send({
+      error: "Internal Server Error",
+      message: "Response doesn't match the schema",
+      statusCode: 500,
+      details: {
+        issues: error.cause.issues,
+        method: error.method,
+        url: error.url,
+      },
     });
   }
 
@@ -33,5 +55,7 @@ export const errorHandler: FastifyErrorHandler = (error, request, reply) => {
     return reply.status(404).send({ message: error.message });
   }
 
-  return reply.status(500).send({ message: "Internal server error" });
+  if (error instanceof Error) {
+    return reply.status(500).send({ message: error.message });
+  }
 };

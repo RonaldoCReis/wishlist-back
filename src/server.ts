@@ -48,8 +48,6 @@ const protectedRoutes: FastifyPluginCallback = async (app) => {
     }
     done();
   });
-
-  app.register(UserController, { prefix: "/users" });
 };
 
 const publicRoutes: FastifyPluginCallback = async (app) => {
@@ -57,11 +55,12 @@ const publicRoutes: FastifyPluginCallback = async (app) => {
     routePrefix: "/docs",
   });
 
+  app.register(UserController, { prefix: "/users" });
   app.register(ListController, { prefix: "/lists" });
   app.register(ProductController, { prefix: "/products" });
-  app.register(Webhooks, { prefix: "/webhooks" });
 };
 
+app.register(Webhooks, { prefix: "/webhooks" });
 app.register(protectedRoutes);
 app.register(publicRoutes);
 

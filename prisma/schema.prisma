@@ -18,6 +18,7 @@ model User {
   email           String   @unique
   firstName       String?  @map("first_name")
   lastName        String?  @map("last_name")
+  username        String   @unique
   profileImageUrl String?  @map("profile_image_url")
   createdAt       DateTime @default(now()) @map("created_at")
   updatedAt       DateTime @updatedAt @map("updated_at")

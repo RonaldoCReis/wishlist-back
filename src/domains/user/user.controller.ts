@@ -56,7 +56,7 @@ export const UserController = async (app: FastifyInstance) => {
         tags: ["Users"],
         body: NewUser,
         response: {
-          201: User.pick({ id: true }),
+          201: User,
           400: z.object({
             message: z.string(),
           }),

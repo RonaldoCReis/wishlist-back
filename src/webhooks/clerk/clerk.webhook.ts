@@ -7,23 +7,22 @@ import {
   ClerkWebhookHeaders,
   ClerkWebhookUpdatedUser,
 } from "./clerk.schema";
-import z from "zod";
 import { UserService } from "../../domains/user/user.service";
 import { BadRequest } from "../../errors/classes";
+import z from "zod";
 
 export const ClerkWebhook = async (app: FastifyInstance) => {
   app.withTypeProvider<ZodTypeProvider>().post(
     "/clerk",
     {
+      config: {
+        rawBody: true,
+      },
       schema: {
         summary: "Clerk webhook",
         tags: ["Webhooks"],
         headers: ClerkWebhookHeaders,
         body: z.string(),
-      },
-      preParsing: async (req, res, payload, done) => {
-        req.headers["content-type"] = "text/plain";
-        done();
       },
     },
     async (req, res) => {
@@ -40,7 +39,7 @@ export const ClerkWebhook = async (app: FastifyInstance) => {
 
       // Get headers and body
       const headers = req.headers;
-      const payload = req.body;
+      const payload = req.rawBody;
 
       // Get Svix headers for verification
       const svix_id = headers["svix-id"];
@@ -61,6 +60,9 @@ export const ClerkWebhook = async (app: FastifyInstance) => {
       // If successful, the payload will be available from 'evt'
       // If verification fails, error out and return error code
       try {
+        if (!payload) {
+          throw new BadRequest("Error: Missing payload");
+        }
         evt = wh.verify(payload, {
           "svix-id": svix_id as string,
           "svix-timestamp": svix_timestamp as string,
@@ -88,24 +90,34 @@ export const ClerkWebhook = async (app: FastifyInstance) => {
       console.log("Webhook payload:", typedEvt.data);
 
       if (eventType === "user.created") {
-        UserService.create({
+        if (!typedEvt.data.username) {
+          throw new BadRequest("Error: Missing username");
+        }
+
+        await UserService.create({
           email: typedEvt.data.email_addresses[0].email_address,
           id: typedEvt.data.id,
           firstName: typedEvt.data.first_name,
           lastName: typedEvt.data.last_name,
           profileImageUrl: typedEvt.data.profile_image_url,
+          username: typedEvt.data.username,
         });
       } else if (eventType === "user.deleted") {
-        UserService.remove(typedEvt.data.id);
+        await UserService.remove(typedEvt.data.id);
       } else if (eventType === "user.updated") {
-        UserService.update(typedEvt.data.id, {
+        if (!typedEvt.data.username) {
+          throw new BadRequest("Error: Missing username");
+        }
+        await UserService.update(typedEvt.data.id, {
           email: typedEvt.data.email_addresses[0].email_address,
           firstName: typedEvt.data.first_name,
           lastName: typedEvt.data.last_name,
           profileImageUrl: typedEvt.data.image_url,
+          username: typedEvt.data.username,
         });
       } else {
         return void res.status(400).send({
+          success: false,
           message: "Invalid event type",
         });
       }

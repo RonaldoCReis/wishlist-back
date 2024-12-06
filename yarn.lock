@@ -574,6 +574,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"bytes@npm:3.1.2":
+  version: 3.1.2
+  resolution: "bytes@npm:3.1.2"
+  checksum: 10c0/76d1c43cbd602794ad8ad2ae94095cddeb1de78c5dddaa7005c51af10b0176c69971a6d88e805a90c2b6550d76636e43c40d8427a808b8645ede885de4a0358e
+  languageName: node
+  linkType: hard
+
 "cacache@npm:^18.0.0":
   version: 18.0.4
   resolution: "cacache@npm:18.0.4"
@@ -939,6 +946,17 @@ __metadata:
   languageName: node
   linkType: hard
 
+"fastify-raw-body@npm:^5.0.0":
+  version: 5.0.0
+  resolution: "fastify-raw-body@npm:5.0.0"
+  dependencies:
+    fastify-plugin: "npm:^5.0.0"
+    raw-body: "npm:^3.0.0"
+    secure-json-parse: "npm:^2.4.0"
+  checksum: 10c0/b5af3fb96fb90eedc16be2d801d5e9fd1ef624c28f8014b1dc7d1dfadd361595da5c20bfb65e68adbd4f6b3f09aeba8b639fc138abbf8174f8676025b24f895c
+  languageName: node
+  linkType: hard
+
 "fastify-type-provider-zod@npm:^4.0.2":
   version: 4.0.2
   resolution: "fastify-type-provider-zod@npm:4.0.2"
@@ -1111,7 +1129,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"http-errors@npm:^2.0.0":
+"http-errors@npm:2.0.0, http-errors@npm:^2.0.0":
   version: 2.0.0
   resolution: "http-errors@npm:2.0.0"
   dependencies:
@@ -1144,7 +1162,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"iconv-lite@npm:^0.6.2":
+"iconv-lite@npm:0.6.3, iconv-lite@npm:^0.6.2":
   version: 0.6.3
   resolution: "iconv-lite@npm:0.6.3"
   dependencies:
@@ -1705,6 +1723,18 @@ __metadata:
   languageName: node
   linkType: hard
 
+"raw-body@npm:^3.0.0":
+  version: 3.0.0
+  resolution: "raw-body@npm:3.0.0"
+  dependencies:
+    bytes: "npm:3.1.2"
+    http-errors: "npm:2.0.0"
+    iconv-lite: "npm:0.6.3"
+    unpipe: "npm:1.0.0"
+  checksum: 10c0/f8daf4b724064a4811d118745a781ca0fb4676298b8adadfd6591155549cfea0a067523cf7dd3baeb1265fecc9ce5dfb2fc788c12c66b85202a336593ece0f87
+  languageName: node
+  linkType: hard
+
 "real-require@npm:^0.2.0":
   version: 0.2.0
   resolution: "real-require@npm:0.2.0"
@@ -1791,7 +1821,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"secure-json-parse@npm:^2.7.0":
+"secure-json-parse@npm:^2.4.0, secure-json-parse@npm:^2.7.0":
   version: 2.7.0
   resolution: "secure-json-parse@npm:2.7.0"
   checksum: 10c0/f57eb6a44a38a3eeaf3548228585d769d788f59007454214fab9ed7f01fbf2e0f1929111da6db28cf0bcc1a2e89db5219a59e83eeaec3a54e413a0197ce879e4
@@ -2148,6 +2178,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"unpipe@npm:1.0.0":
+  version: 1.0.0
+  resolution: "unpipe@npm:1.0.0"
+  checksum: 10c0/193400255bd48968e5c5383730344fbb4fa114cdedfab26e329e50dd2d81b134244bb8a72c6ac1b10ab0281a58b363d06405632c9d49ca9dfd5e90cbd7d0f32c
+  languageName: node
+  linkType: hard
+
 "uri-js@npm:^4.2.2":
   version: 4.4.1
   resolution: "uri-js@npm:4.4.1"
@@ -2232,6 +2269,7 @@ __metadata:
     "@prisma/client": "npm:5.22.0"
     "@types/node": "npm:^22.10.1"
     fastify: "npm:^5.1.0"
+    fastify-raw-body: "npm:^5.0.0"
     fastify-type-provider-zod: "npm:^4.0.2"
     prisma: "npm:^5.22.0"
     svix: "npm:^1.42.0"
