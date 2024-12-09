@@ -6,6 +6,9 @@ const findAll = () => prisma.user.findMany();
 const findById = (id: User["id"]) =>
   prisma.user.findUnique({ where: { id }, include: { lists: true } });
 
+const findByUsername = (username: User["username"]) =>
+  prisma.user.findUnique({ where: { username }, include: { lists: true } });
+
 const create = (data: NewUser) => prisma.user.create({ data });
 
 const remove = (id: User["id"]) => prisma.user.delete({ where: { id } });
@@ -22,6 +25,7 @@ const update = (
 export const UserRepository = {
   findAll,
   findById,
+  findByUsername,
   create,
   remove,
   update,

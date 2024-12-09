@@ -24,13 +24,13 @@ export const UserController = async (app: FastifyInstance) => {
   );
 
   app.withTypeProvider<ZodTypeProvider>().get(
-    "/:id",
+    "/:username",
     {
       schema: {
-        summary: "Get user by ID",
+        summary: "Get user by username",
         tags: ["Users"],
         params: z.object({
-          id: User.shape.id,
+          username: User.shape.username,
         }),
         response: {
           200: User.extend({
@@ -43,7 +43,7 @@ export const UserController = async (app: FastifyInstance) => {
       },
     },
     async (req, res) => {
-      const user = await UserService.findById(req.params.id);
+      const user = await UserService.findByUsername(req.params.username);
       res.status(200).send(user);
     }
   );

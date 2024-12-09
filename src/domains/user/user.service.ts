@@ -12,6 +12,14 @@ const findById = async (id: User["id"]) => {
   return user;
 };
 
+const findByUsername = async (username: User["username"]) => {
+  const user = await UserRepository.findByUsername(username);
+  if (!user) {
+    throw new NotFound("User not found");
+  }
+  return user;
+};
+
 const create = async (data: NewUser) => {
   const user = await UserRepository.findById(data.id);
   if (user) {
@@ -45,6 +53,7 @@ const update = async (id: User["id"], data: UpdateUser) => {
 export const UserService = {
   findAll,
   findById,
+  findByUsername,
   create,
   remove,
   update,
