@@ -6,6 +6,7 @@ export const UpdateUser = z.object({
   firstName: z.string().nullish(),
   lastName: z.string().nullish(),
   profileImageUrl: z.string().nullish(),
+  bio: z.string().nullish(),
 });
 
 export type UpdateUser = z.infer<typeof UpdateUser>;

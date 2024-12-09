@@ -20,6 +20,7 @@ model User {
   lastName        String?  @map("last_name")
   username        String   @unique
   profileImageUrl String?  @map("profile_image_url")
+  bio             String?
   createdAt       DateTime @default(now()) @map("created_at")
   updatedAt       DateTime @updatedAt @map("updated_at")
   lists           List[]
