@@ -1,12 +1,17 @@
 import { FastifyInstance } from "fastify";
 import { ZodTypeProvider } from "fastify-type-provider-zod";
-import { List, Lists, NewList, UpdateList } from "./list.schema";
 import { ListService } from "./list.service";
 import { getAuth } from "@clerk/fastify";
 import { Error } from "../../errors/errorSchema";
 import z from "zod";
-import { Products } from "../product/product.schema";
 import { Forbidden, Unauthorized } from "../../errors/classes";
+import {
+  List,
+  Lists,
+  NewList,
+  Products,
+  UpdateList,
+} from "@ronaldocreis/wishlist-schema";
 
 export const ListController = async (app: FastifyInstance) => {
   app.withTypeProvider<ZodTypeProvider>().get(

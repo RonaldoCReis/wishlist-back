@@ -1,7 +1,11 @@
+import {
+  List,
+  NewProduct,
+  Product,
+  UpdateProduct,
+} from "@ronaldocreis/wishlist-schema";
 import { NotFound } from "../../errors/classes";
-import { List } from "../list/list.schema";
 import { ProductRepository } from "./product.repository";
-import { NewProduct, Product, UpdateProduct } from "./product.schema";
 
 const findAll = async (listId: List["id"]) =>
   await ProductRepository.findAll(listId);

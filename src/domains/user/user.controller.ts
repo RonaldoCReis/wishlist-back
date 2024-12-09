@@ -1,9 +1,14 @@
 import { FastifyInstance } from "fastify";
 import { ZodTypeProvider } from "fastify-type-provider-zod";
-import { NewUser, UpdateUser, User, Users } from "./user.schema";
 import z from "zod";
 import { UserService } from "./user.service";
-import { List } from "../list/list.schema";
+import {
+  Lists,
+  NewUser,
+  UpdateUser,
+  User,
+  Users,
+} from "@ronaldocreis/wishlist-schema";
 
 export const UserController = async (app: FastifyInstance) => {
   app.withTypeProvider<ZodTypeProvider>().get(
@@ -34,7 +39,7 @@ export const UserController = async (app: FastifyInstance) => {
         }),
         response: {
           200: User.extend({
-            lists: z.array(List),
+            lists: Lists,
           }),
           404: z.object({
             message: z.string(),

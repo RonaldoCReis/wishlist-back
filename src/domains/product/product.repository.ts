@@ -1,6 +1,10 @@
+import {
+  List,
+  NewProduct,
+  Product,
+  UpdateProduct,
+} from "@ronaldocreis/wishlist-schema";
 import { prisma } from "../../lib/prisma";
-import { List } from "../list/list.schema";
-import { NewProduct, Product, UpdateProduct } from "./product.schema";
 
 const findAll = (listId: List["id"]) =>
   prisma.product.findMany({ where: { listId } });

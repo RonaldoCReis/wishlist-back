@@ -1,6 +1,5 @@
+import { List, NewList, UpdateList, User } from "@ronaldocreis/wishlist-schema";
 import { prisma } from "../../lib/prisma";
-import { User } from "../user/user.schema";
-import { List, NewList, UpdateList } from "./list.schema";
 
 const findAll = (userId: User["id"]) =>
   prisma.list.findMany({ where: { userId } });
