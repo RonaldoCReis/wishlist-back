@@ -32,6 +32,16 @@ services:
         condition: service_healthy
     environment:
       DATABASE_URL: ${DOCKER_DATABASE_URL}
+  ngrok:
+    image: ngrok/ngrok:latest
+    command:
+      - "http"
+      - "http://host.docker.internal:3333"
+      - "--url=${NGROK_URL}"
+    environment:
+      NGROK_AUTHTOKEN: ${NGROK_AUTHTOKEN}
+    ports:
+      - 4040:4040
 
 volumes:
   wishlist_pg_data:

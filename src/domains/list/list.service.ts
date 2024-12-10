@@ -1,7 +1,6 @@
+import { List, NewList, UpdateList, User } from "@ronaldocreis/wishlist-schema";
 import { NotFound } from "../../errors/classes";
-import { User } from "../user/user.schema";
 import { ListRepository } from "./list.repository";
-import { List, NewList, UpdateList } from "./list.schema";
 
 const findAll = async (userId: User["id"]) =>
   await ListRepository.findAll(userId);
