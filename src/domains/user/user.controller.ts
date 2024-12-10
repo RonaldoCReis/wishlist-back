@@ -3,7 +3,6 @@ import { ZodTypeProvider } from "fastify-type-provider-zod";
 import z from "zod";
 import { UserService } from "./user.service";
 import {
-  Lists,
   NewUser,
   UpdateUser,
   User,
@@ -38,9 +37,7 @@ export const UserController = async (app: FastifyInstance) => {
           username: User.shape.username,
         }),
         response: {
-          200: User.extend({
-            lists: Lists,
-          }),
+          200: User,
           404: z.object({
             message: z.string(),
           }),
@@ -61,7 +58,7 @@ export const UserController = async (app: FastifyInstance) => {
         tags: ["Users"],
         body: NewUser,
         response: {
-          201: User,
+          201: User.shape.id,
           400: z.object({
             message: z.string(),
           }),
@@ -70,7 +67,7 @@ export const UserController = async (app: FastifyInstance) => {
     },
     async (req, res) => {
       const user = await UserService.create(req.body);
-      res.status(201).send(user);
+      res.status(201).send(user.id);
     }
   );
 
@@ -84,7 +81,7 @@ export const UserController = async (app: FastifyInstance) => {
           id: User.shape.id,
         }),
         response: {
-          200: User,
+          200: User.shape.id,
           404: z.object({
             message: z.string(),
           }),
@@ -93,7 +90,7 @@ export const UserController = async (app: FastifyInstance) => {
     },
     async (req, res) => {
       const user = await UserService.remove(req.params.id);
-      res.status(200).send(user);
+      res.status(200).send(user.id);
     }
   );
 
@@ -116,7 +113,8 @@ export const UserController = async (app: FastifyInstance) => {
       },
     },
     async (req, res) => {
-      const user = await UserService.update(req.params.id, req.body);
+      const updatedUser = await UserService.update(req.params.id, req.body);
+      const user = await UserService.findByUsername(updatedUser.username);
       res.status(200).send(user);
     }
   );

@@ -1,7 +1,8 @@
-FROM node:22-alpine
+FROM node:20-alpine
 
 # Create app directory
 WORKDIR /app
+RUN apk add --no-cache openssl
 RUN corepack enable
 
 # Install app dependencies

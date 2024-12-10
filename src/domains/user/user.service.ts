@@ -1,8 +1,16 @@
-import { NewUser, UpdateUser, User } from "@ronaldocreis/wishlist-schema";
+import {
+  NewUser,
+  UpdateUser,
+  User,
+  Users,
+} from "@ronaldocreis/wishlist-schema";
 import { BadRequest, NotFound } from "../../errors/classes";
 import { UserRepository } from "./user.repository";
 
-const findAll = async () => await UserRepository.findAll();
+const findAll = async (): Promise<Users> => {
+  const users = await UserRepository.findAll();
+  return users;
+};
 
 const findById = async (id: User["id"]) => {
   const user = await UserRepository.findById(id);
@@ -12,12 +20,30 @@ const findById = async (id: User["id"]) => {
   return user;
 };
 
-const findByUsername = async (username: User["username"]) => {
+const findByUsername = async (username: User["username"]): Promise<User> => {
   const user = await UserRepository.findByUsername(username);
   if (!user) {
     throw new NotFound("User not found");
   }
-  return user;
+
+  const newUser: User = {
+    createdAt: user.createdAt,
+    email: user.email,
+    firstName: user.firstName,
+    id: user.id,
+    lastName: user.lastName,
+    profileImageUrl: user.profileImageUrl,
+    updatedAt: user.updatedAt,
+    username: user.username,
+    bio: user.bio,
+    lists: user.lists.map((list) => ({
+      id: list.id,
+      name: list.name,
+      productCount: list.products.length,
+      productImages: list.products.map((product) => product.imageUrl),
+    })),
+  };
+  return newUser;
 };
 
 const create = async (data: NewUser) => {
