@@ -28,7 +28,8 @@ const findById = async (id: List["id"]) => {
   return list;
 };
 
-const create = async (data: NewList) => {
+const create = async (payload: NewList, userId: User["id"]) => {
+  const data = { ...payload, userId };
   const newList = await ListRepository.create(data);
   return newList;
 };

@@ -39,7 +39,7 @@ export const ListController = async (app: FastifyInstance) => {
       schema: {
         summary: "Create a new list",
         tags: ["Lists"],
-        body: NewList.omit({ userId: true }),
+        body: NewList,
         response: { 201: List, 401: Error },
       },
     },
@@ -48,7 +48,7 @@ export const ListController = async (app: FastifyInstance) => {
       if (!userId) {
         throw new Unauthorized();
       }
-      const newList = await ListService.create({ ...req.body, userId });
+      const newList = await ListService.create(req.body, userId);
       res.status(201).send(newList);
     }
   );

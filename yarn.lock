@@ -436,12 +436,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@ronaldocreis/wishlist-schema@npm:^1.0.7":
-  version: 1.0.7
-  resolution: "@ronaldocreis/wishlist-schema@npm:1.0.7"
+"@ronaldocreis/wishlist-schema@npm:^1.0.8":
+  version: 1.0.8
+  resolution: "@ronaldocreis/wishlist-schema@npm:1.0.8"
   dependencies:
     zod: "npm:^3.23.8"
-  checksum: 10c0/88fae73786e5b55b1c1e7f0cfc4b61e17f1025ef3df24aca4acae02ef559a87d8edf596ffab33513f29842c9a0fe64e3f115f045a2891d61fe284e1f1874fa2a
+  checksum: 10c0/13466814a79de4497269950863b1f297373242f9fc2a425e3cd26e2a55860b464b6a83bfa9f64e7103cbb9f733efa786aa140edb4b9a2c8a87694eb8515eed5e
   languageName: node
   linkType: hard
 
@@ -2276,7 +2276,7 @@ __metadata:
     "@fastify/swagger": "npm:^9.4.0"
     "@fastify/swagger-ui": "npm:^5.2.0"
     "@prisma/client": "npm:5.22.0"
-    "@ronaldocreis/wishlist-schema": "npm:^1.0.7"
+    "@ronaldocreis/wishlist-schema": "npm:^1.0.8"
     "@types/node": "npm:^22.10.1"
     fastify: "npm:^5.1.0"
     fastify-raw-body: "npm:^5.0.0"
