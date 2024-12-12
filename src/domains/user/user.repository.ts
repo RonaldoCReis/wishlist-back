@@ -14,7 +14,8 @@ const findByUsername = (username: User["username"]) =>
     },
   });
 
-const create = (data: NewUser) => prisma.user.create({ data });
+const create = (data: NewUser) =>
+  prisma.user.create({ data, include: { lists: true } });
 
 const remove = (id: User["id"]) => prisma.user.delete({ where: { id } });
 

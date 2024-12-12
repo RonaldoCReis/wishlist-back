@@ -1,9 +1,24 @@
-import { List, NewList, UpdateList, User } from "@ronaldocreis/wishlist-schema";
+import {
+  List,
+  Lists,
+  NewList,
+  UpdateList,
+  User,
+} from "@ronaldocreis/wishlist-schema";
 import { NotFound } from "../../errors/classes";
 import { ListRepository } from "./list.repository";
 
-const findAll = async (userId: User["id"]) =>
-  await ListRepository.findAll(userId);
+const findAll = async (userId: User["id"]): Promise<Lists> => {
+  const lists = await ListRepository.findAll(userId);
+  const newLists: Lists = lists.map((list) => ({
+    id: list.id,
+    name: list.name,
+    visibility: list.visibility,
+    productCount: list.products.length,
+    productImages: list.products.map((product) => product.imageUrl),
+  }));
+  return newLists;
+};
 
 const findById = async (id: List["id"]) => {
   const list = await ListRepository.findById(id);

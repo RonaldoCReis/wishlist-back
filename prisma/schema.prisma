@@ -29,15 +29,21 @@ model User {
 }
 
 model List {
-  id        String    @id @default(cuid())
-  name      String
-  createdAt DateTime  @default(now()) @map("created_at")
-  updatedAt DateTime  @updatedAt @map("updated_at")
-  userId    String    @map("user_id")
-  User      User      @relation(fields: [userId], references: [id])
-  products  Product[]
+  id         String     @id @default(cuid())
+  name       String
+  createdAt  DateTime   @default(now()) @map("created_at")
+  updatedAt  DateTime   @updatedAt @map("updated_at")
+  userId     String     @map("user_id")
+  visibility Visibility
+  User       User       @relation(fields: [userId], references: [id])
+  products   Product[]
 
   @@map("lists")
+}
+
+enum Visibility {
+  public
+  private
 }
 
 model Product {

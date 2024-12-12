@@ -39,6 +39,7 @@ const findByUsername = async (username: User["username"]): Promise<User> => {
     lists: user.lists.map((list) => ({
       id: list.id,
       name: list.name,
+      visibility: list.visibility,
       productCount: list.products.length,
       productImages: list.products.map((product) => product.imageUrl),
     })),

@@ -2,17 +2,26 @@ import { List, NewList, UpdateList, User } from "@ronaldocreis/wishlist-schema";
 import { prisma } from "../../lib/prisma";
 
 const findAll = (userId: User["id"]) =>
-  prisma.list.findMany({ where: { userId } });
+  prisma.list.findMany({
+    where: { userId },
+    include: { products: { select: { imageUrl: true } } },
+  });
 
 const findById = (id: List["id"]) =>
   prisma.list.findUnique({ where: { id }, include: { products: true } });
 
-const create = (data: NewList) => prisma.list.create({ data });
+const create = (data: NewList) =>
+  prisma.list.create({ data, include: { products: true } });
 
-const remove = (id: List["id"]) => prisma.list.delete({ where: { id } });
+const remove = (id: List["id"]) =>
+  prisma.list.delete({ where: { id }, include: { products: true } });
 
 const update = (id: List["id"], { name }: UpdateList) =>
-  prisma.list.update({ where: { id }, data: { name } });
+  prisma.list.update({
+    where: { id },
+    data: { name },
+    include: { products: true },
+  });
 
 export const ListRepository = {
   findAll,
