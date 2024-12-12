@@ -22,7 +22,7 @@ export const ClerkWebhook = async (app: FastifyInstance) => {
         summary: "Clerk webhook",
         tags: ["Webhooks"],
         headers: ClerkWebhookHeaders,
-        body: z.string(),
+        body: z.coerce.string(),
       },
     },
     async (req, res) => {
