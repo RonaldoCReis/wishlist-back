@@ -13,11 +13,14 @@ import { Webhooks } from "./webhooks/webhooks";
 import { ListController } from "./domains/list/list.controller";
 import { ProductController } from "./domains/product/product.controller";
 import { errorHandler } from "./error-handler";
+import cors from "@fastify/cors";
 
 const app = Fastify();
 
 app.setValidatorCompiler(validatorCompiler);
 app.setSerializerCompiler(serializerCompiler);
+
+app.register(cors);
 
 app.register(fastifySwagger, {
   openapi: {
