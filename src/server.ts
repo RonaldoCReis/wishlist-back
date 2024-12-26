@@ -14,6 +14,7 @@ import { ListController } from "./domains/list/list.controller";
 import { ProductController } from "./domains/product/product.controller";
 import { errorHandler } from "./error-handler";
 import cors from "@fastify/cors";
+import { OpenGraphController } from "./domains/openGraph/openGraph.controller";
 
 const app = Fastify();
 
@@ -61,6 +62,7 @@ const publicRoutes: FastifyPluginCallback = async (app) => {
   app.register(UserController, { prefix: "/users" });
   app.register(ListController, { prefix: "/lists" });
   app.register(ProductController, { prefix: "/products" });
+  app.register(OpenGraphController, { prefix: "/open-graph" });
 };
 
 app.register(Webhooks, { prefix: "/webhooks" });
