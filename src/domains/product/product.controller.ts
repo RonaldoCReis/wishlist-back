@@ -11,6 +11,7 @@ import {
   NewProduct,
   Product,
   Products,
+  UpdateProduct,
 } from "@ronaldocreis/wishlist-schema";
 
 export const ProductController = async (app: FastifyInstance) => {
@@ -125,7 +126,7 @@ export const ProductController = async (app: FastifyInstance) => {
         params: z.object({
           id: z.string(),
         }),
-        body: NewProduct,
+        body: UpdateProduct,
         response: {
           200: Product,
           401: Error,
