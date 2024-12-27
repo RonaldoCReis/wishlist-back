@@ -6,18 +6,18 @@ import z from "zod";
 
 export const OpenGraphController = async (app: FastifyInstance) => {
   app.withTypeProvider<ZodTypeProvider>().get(
-    "/:url",
+    "/",
     {
       schema: {
         summary: "Get Open Graph tags from URL",
         tags: ["Open Graph"],
-        params: z.object({
+        querystring: z.object({
           url: z.string().url(),
         }),
       },
     },
     async (req, res) => {
-      const { url } = req.params;
+      const { url } = req.query;
       const options = { url };
       try {
         const data = await ogs(options);
