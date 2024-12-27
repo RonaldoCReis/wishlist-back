@@ -47,17 +47,18 @@ enum Visibility {
 }
 
 model Product {
-  id        String    @id @default(cuid())
-  url       String
-  name      String
-  price     Float?
-  imageUrl  String?   @map("image_url")
-  store     String?
-  createdAt DateTime  @default(now()) @map("created_at")
-  updatedAt DateTime  @updatedAt @map("updated_at")
-  listId    String    @map("list_id")
-  priority  Priority?
-  List      List      @relation(fields: [listId], references: [id])
+  id          String    @id @default(cuid())
+  url         String
+  name        String
+  price       Float?
+  imageUrl    String?   @map("image_url")
+  store       String?
+  createdAt   DateTime  @default(now()) @map("created_at")
+  updatedAt   DateTime  @updatedAt @map("updated_at")
+  listId      String    @map("list_id")
+  description String?
+  priority    Priority?
+  List        List      @relation(fields: [listId], references: [id])
 
   @@map("products")
 }

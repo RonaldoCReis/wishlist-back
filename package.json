@@ -16,7 +16,7 @@
     "@fastify/swagger": "^9.4.0",
     "@fastify/swagger-ui": "^5.2.0",
     "@prisma/client": "5.22.0",
-    "@ronaldocreis/wishlist-schema": "^1.0.15",
+    "@ronaldocreis/wishlist-schema": "^1.0.16",
     "fastify": "^5.1.0",
     "fastify-raw-body": "^5.0.0",
     "fastify-type-provider-zod": "^4.0.2",
