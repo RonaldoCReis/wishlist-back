@@ -16,13 +16,10 @@ const create = (data: NewProduct) => prisma.product.create({ data });
 
 const remove = (id: Product["id"]) => prisma.product.delete({ where: { id } });
 
-const update = (
-  id: Product["id"],
-  { name, url, imageUrl, price, store }: UpdateProduct
-) =>
+const update = (id: Product["id"], data: UpdateProduct) =>
   prisma.product.update({
     where: { id },
-    data: { name, url, imageUrl, price, store },
+    data,
   });
 
 export const ProductRepository = {
