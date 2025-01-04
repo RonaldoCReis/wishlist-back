@@ -8,7 +8,10 @@ const findAll = (userId: User["id"]) =>
   });
 
 const findById = (id: List["id"]) =>
-  prisma.list.findUnique({ where: { id }, include: { products: true } });
+  prisma.list.findUnique({
+    where: { id },
+    include: { products: { orderBy: { createdAt: "desc" } } },
+  });
 
 const create = (data: NewList & { userId: User["id"] }) =>
   prisma.list.create({ data, include: { products: true } });
