@@ -7,8 +7,8 @@ import {
 import { BadRequest, NotFound } from "../../errors/classes";
 import { UserRepository } from "./user.repository";
 
-const findAll = async (): Promise<Users> => {
-  const users = await UserRepository.findAll();
+const findAll = async ({ query }: { query?: string }): Promise<Users> => {
+  const users = await UserRepository.findAll({ query });
   return users;
 };
 

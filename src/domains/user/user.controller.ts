@@ -3,10 +3,11 @@ import { ZodTypeProvider } from "fastify-type-provider-zod";
 import z from "zod";
 import { UserService } from "./user.service";
 import {
-  NewUser,
-  UpdateUser,
-  User,
-  Users,
+  NewUserSchema,
+  UpdateUserSchema,
+  UserSchema,
+  UsersQuerySchema,
+  UsersSchema,
 } from "@ronaldocreis/wishlist-schema";
 
 export const UserController = async (app: FastifyInstance) => {
@@ -15,14 +16,16 @@ export const UserController = async (app: FastifyInstance) => {
     {
       schema: {
         summary: "List all users",
+        querystring: UsersQuerySchema,
         tags: ["Users"],
         response: {
-          200: Users,
+          200: UsersSchema,
         },
       },
     },
     async (req, res) => {
-      const users = await UserService.findAll();
+      const query = req.query.search;
+      const users = await UserService.findAll({ query });
       res.send(users);
     }
   );
@@ -34,10 +37,10 @@ export const UserController = async (app: FastifyInstance) => {
         summary: "Get user by username",
         tags: ["Users"],
         params: z.object({
-          username: User.shape.username,
+          username: UserSchema.shape.username,
         }),
         response: {
-          200: User,
+          200: UserSchema,
           404: z.object({
             message: z.string(),
           }),
@@ -56,9 +59,9 @@ export const UserController = async (app: FastifyInstance) => {
       schema: {
         summary: "Create a new user",
         tags: ["Users"],
-        body: NewUser,
+        body: NewUserSchema,
         response: {
-          201: User.shape.id,
+          201: UserSchema.shape.id,
           400: z.object({
             message: z.string(),
           }),
@@ -78,10 +81,10 @@ export const UserController = async (app: FastifyInstance) => {
         summary: "Delete user by ID",
         tags: ["Users"],
         params: z.object({
-          id: User.shape.id,
+          id: UserSchema.shape.id,
         }),
         response: {
-          200: User.shape.id,
+          200: UserSchema.shape.id,
           404: z.object({
             message: z.string(),
           }),
@@ -101,11 +104,11 @@ export const UserController = async (app: FastifyInstance) => {
         summary: "Update user by ID",
         tags: ["Users"],
         params: z.object({
-          id: User.shape.id,
+          id: UserSchema.shape.id,
         }),
-        body: UpdateUser,
+        body: UpdateUserSchema,
         response: {
-          200: User,
+          200: UserSchema,
           404: z.object({
             message: z.string(),
           }),

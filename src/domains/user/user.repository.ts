@@ -1,7 +1,10 @@
 import { NewUser, UpdateUser, User } from "@ronaldocreis/wishlist-schema";
 import { prisma } from "../../lib/prisma";
 
-const findAll = () => prisma.user.findMany();
+const findAll = ({ query }: { query?: string }) =>
+  prisma.user.findMany({
+    where: { username: { contains: query, mode: "insensitive" } },
+  });
 
 const findById = (id: User["id"]) =>
   prisma.user.findUnique({ where: { id }, include: { lists: true } });

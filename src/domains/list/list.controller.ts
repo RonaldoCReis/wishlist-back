@@ -6,11 +6,11 @@ import { Error } from "../../errors/errorSchema";
 import z from "zod";
 import { Forbidden, Unauthorized } from "../../errors/classes";
 import {
-  List,
-  Lists,
-  NewList,
-  Products,
-  UpdateList,
+  ListSchema,
+  ListsSchema,
+  NewListSchema,
+  ProductsSchema,
+  UpdateListSchema,
 } from "@ronaldocreis/wishlist-schema";
 
 export const ListController = async (app: FastifyInstance) => {
@@ -20,7 +20,7 @@ export const ListController = async (app: FastifyInstance) => {
       schema: {
         summary: "List all lists from current user",
         tags: ["Lists"],
-        response: { 200: Lists, 401: Error },
+        response: { 200: ListsSchema, 401: Error },
       },
     },
     async (req, res) => {
@@ -39,8 +39,8 @@ export const ListController = async (app: FastifyInstance) => {
       schema: {
         summary: "Create a new list",
         tags: ["Lists"],
-        body: NewList,
-        response: { 201: List, 401: Error },
+        body: NewListSchema,
+        response: { 201: ListSchema, 401: Error },
       },
     },
     async (req, res) => {
@@ -62,7 +62,7 @@ export const ListController = async (app: FastifyInstance) => {
         params: z.object({
           id: z.string(),
         }),
-        response: { 200: List, 401: Error, 404: Error },
+        response: { 200: ListSchema, 401: Error, 404: Error },
       },
     },
     async (req, res) => {
@@ -90,8 +90,8 @@ export const ListController = async (app: FastifyInstance) => {
         params: z.object({
           id: z.string(),
         }),
-        body: UpdateList,
-        response: { 200: List, 401: Error, 404: Error },
+        body: UpdateListSchema,
+        response: { 200: ListSchema, 401: Error, 404: Error },
       },
     },
     async (req, res) => {
@@ -120,8 +120,8 @@ export const ListController = async (app: FastifyInstance) => {
           id: z.string(),
         }),
         response: {
-          200: List.extend({
-            products: Products,
+          200: ListSchema.extend({
+            products: ProductsSchema,
           }),
           404: Error,
         },

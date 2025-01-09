@@ -308,9 +308,9 @@
     "@prisma/debug" "5.22.0"
 
 "@ronaldocreis/wishlist-schema@^1.0.16":
-  version "1.0.20"
-  resolved "https://registry.yarnpkg.com/@ronaldocreis/wishlist-schema/-/wishlist-schema-1.0.20.tgz#ee9e7641dd6689b486e2c988da3451ed218c78f9"
-  integrity sha512-tAsixrzxPz03b9AAvW36RPxzSKMsM6p3W35VYBth+ioK2QsscqjKEtxzZNufJrbSL/y3FEqTXgu2mHg86yyVvw==
+  version "1.1.1"
+  resolved "https://registry.yarnpkg.com/@ronaldocreis/wishlist-schema/-/wishlist-schema-1.1.1.tgz#6c2fb8e5148ef462ba4fdd415fd789681e230b12"
+  integrity sha512-hR+/7NZ0PVE+2H0Jl8KwyQEq/O+9RPGDt2llUJhpo1L/raJrV4FXItY6fpW9WwWArSJyLksi7Vf9SDoLVAPMPQ==
   dependencies:
     zod "^3.23.8"
 

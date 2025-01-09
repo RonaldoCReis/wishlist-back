@@ -7,11 +7,11 @@ import { Error } from "../../errors/errorSchema";
 import { ListService } from "../list/list.service";
 import { Forbidden, Unauthorized } from "../../errors/classes";
 import {
-  List,
-  NewProduct,
-  Product,
-  Products,
-  UpdateProduct,
+  ListSchema,
+  NewProductSchema,
+  ProductSchema,
+  ProductsSchema,
+  UpdateProductSchema,
 } from "@ronaldocreis/wishlist-schema";
 
 export const ProductController = async (app: FastifyInstance) => {
@@ -22,10 +22,10 @@ export const ProductController = async (app: FastifyInstance) => {
         summary: "List all products from list",
         tags: ["Products"],
         response: {
-          200: Products,
+          200: ProductsSchema,
         },
         querystring: z.object({
-          listId: List.shape.id,
+          listId: ListSchema.shape.id,
         }),
       },
     },
@@ -45,7 +45,7 @@ export const ProductController = async (app: FastifyInstance) => {
           id: z.string(),
         }),
         response: {
-          200: Product,
+          200: ProductSchema,
         },
       },
     },
@@ -61,9 +61,9 @@ export const ProductController = async (app: FastifyInstance) => {
       schema: {
         summary: "Create a new product",
         tags: ["Products"],
-        body: NewProduct,
+        body: NewProductSchema,
         response: {
-          201: Product,
+          201: ProductSchema,
           401: Error,
           404: Error,
         },
@@ -95,7 +95,7 @@ export const ProductController = async (app: FastifyInstance) => {
           id: z.string(),
         }),
         response: {
-          200: Product,
+          200: ProductSchema,
           401: Error,
           404: Error,
         },
@@ -126,9 +126,9 @@ export const ProductController = async (app: FastifyInstance) => {
         params: z.object({
           id: z.string(),
         }),
-        body: UpdateProduct,
+        body: UpdateProductSchema,
         response: {
-          200: Product,
+          200: ProductSchema,
           401: Error,
           404: Error,
         },
