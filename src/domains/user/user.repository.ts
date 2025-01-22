@@ -22,13 +22,10 @@ const create = (data: NewUser) =>
 
 const remove = (id: User["id"]) => prisma.user.delete({ where: { id } });
 
-const update = (
-  id: User["id"],
-  { email, firstName, lastName, profileImageUrl, username, bio }: UpdateUser
-) =>
+const update = (id: User["id"], data: UpdateUser) =>
   prisma.user.update({
     where: { id },
-    data: { email, firstName, lastName, profileImageUrl, bio, username },
+    data,
   });
 
 export const UserRepository = {

@@ -29,9 +29,8 @@ const findByUsername = async (username: User["username"]): Promise<User> => {
   const newUser: User = {
     createdAt: user.createdAt,
     email: user.email,
-    firstName: user.firstName,
+    name: user.name,
     id: user.id,
-    lastName: user.lastName,
     profileImageUrl: user.profileImageUrl,
     updatedAt: user.updatedAt,
     username: user.username,

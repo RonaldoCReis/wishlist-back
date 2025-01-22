@@ -71,6 +71,10 @@ app.register(publicRoutes);
 
 app.setErrorHandler(errorHandler);
 
+app.get("/", async (req, res) => {
+  res.send("Wishlist API");
+});
+
 app.listen({ port: 3333, host: "0.0.0.0" }, () => {
   console.log("Server is running on http://localhost:3333");
 });

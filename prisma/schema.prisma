@@ -16,8 +16,7 @@ datasource db {
 model User {
   id              String   @id @unique
   email           String   @unique
-  firstName       String?  @map("first_name")
-  lastName        String?  @map("last_name")
+  name            String?
   username        String   @unique
   profileImageUrl String?  @map("profile_image_url")
   bio             String?

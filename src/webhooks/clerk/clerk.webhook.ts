@@ -97,8 +97,7 @@ export const ClerkWebhook = async (app: FastifyInstance) => {
         await UserService.create({
           email: typedEvt.data.email_addresses[0].email_address,
           id: typedEvt.data.id,
-          firstName: typedEvt.data.first_name,
-          lastName: typedEvt.data.last_name,
+          name: `${typedEvt.data.first_name} ${typedEvt.data.last_name}`,
           profileImageUrl: typedEvt.data.profile_image_url,
           username: typedEvt.data.username,
         });
@@ -109,9 +108,7 @@ export const ClerkWebhook = async (app: FastifyInstance) => {
           throw new BadRequest("Error: Missing username");
         }
         await UserService.update(typedEvt.data.id, {
-          email: typedEvt.data.email_addresses[0].email_address,
-          firstName: typedEvt.data.first_name,
-          lastName: typedEvt.data.last_name,
+          name: `${typedEvt.data.first_name} ${typedEvt.data.last_name}`,
           profileImageUrl: typedEvt.data.image_url,
           username: typedEvt.data.username,
         });
