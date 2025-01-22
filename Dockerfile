@@ -14,7 +14,8 @@ COPY . .
 # Run yarn without generating a yarn.lock file
 RUN yarn
 
-
+# Ensure uploads folder exists and is writable
+RUN mkdir -p /app/uploads && chmod -R 777 /app/uploads
 
 # Use the port used by our server.js configuration
 EXPOSE 3333

@@ -1,14 +1,20 @@
-import { FastifyInstance } from "fastify";
+import { FastifyInstance, FastifyPluginCallback } from "fastify";
 import { ZodTypeProvider } from "fastify-type-provider-zod";
 import z from "zod";
+import path from "path";
+import fs from "fs";
 import { UserService } from "./user.service";
+import Multipart from "@fastify/multipart";
 import {
   NewUserSchema,
+  UpdateUserImageSchema,
   UpdateUserSchema,
   UserSchema,
   UsersQuerySchema,
   UsersSchema,
 } from "@ronaldocreis/wishlist-schema";
+import { getAuth } from "@clerk/fastify";
+import { Forbidden, Unauthorized } from "../../errors/classes";
 
 export const UserController = async (app: FastifyInstance) => {
   app.withTypeProvider<ZodTypeProvider>().get(
@@ -92,6 +98,13 @@ export const UserController = async (app: FastifyInstance) => {
       },
     },
     async (req, res) => {
+      const { userId } = getAuth(req);
+      if (!userId) {
+        throw new Unauthorized();
+      }
+      if (req.params.id !== userId) {
+        throw new Forbidden("Only the user can delete their account");
+      }
       const user = await UserService.remove(req.params.id);
       res.status(200).send(user.id);
     }
@@ -116,9 +129,56 @@ export const UserController = async (app: FastifyInstance) => {
       },
     },
     async (req, res) => {
+      const { userId } = getAuth(req);
+      if (!userId) {
+        throw new Unauthorized();
+      }
+      if (req.params.id !== userId) {
+        throw new Forbidden("Only the user can update their account");
+      }
       const updatedUser = await UserService.update(req.params.id, req.body);
       const user = await UserService.findByUsername(updatedUser.username);
       res.status(200).send(user);
     }
   );
+
+  const imageUpload: FastifyPluginCallback = async (app) => {
+    app.register(Multipart);
+
+    app.withTypeProvider<ZodTypeProvider>().patch(
+      "/image",
+      {
+        schema: {
+          summary: "Update user profile image",
+          tags: ["Users"],
+
+          response: {
+            200: UserSchema,
+            404: z.object({
+              message: z.string(),
+            }),
+          },
+        },
+      },
+      async (req, res) => {
+        const { userId } = getAuth(req);
+        if (!userId) {
+          throw new Unauthorized();
+        }
+
+        const data = await req.file();
+        if (!data) {
+          return res.status(400).send({ message: "No image provided" });
+        }
+
+        const { updatedUser } = await UserService.updateUserImage(userId, data);
+
+        const user = await UserService.findByUsername(updatedUser.username);
+
+        res.status(200).send(user);
+      }
+    );
+  };
+
+  app.register(imageUpload);
 };

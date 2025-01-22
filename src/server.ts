@@ -15,6 +15,8 @@ import { ProductController } from "./domains/product/product.controller";
 import { errorHandler } from "./error-handler";
 import cors from "@fastify/cors";
 import { OpenGraphController } from "./domains/openGraph/openGraph.controller";
+import fastifyStatic from "@fastify/static";
+import path from "path";
 
 const app = Fastify();
 
@@ -68,6 +70,11 @@ const publicRoutes: FastifyPluginCallback = async (app) => {
 app.register(Webhooks, { prefix: "/webhooks" });
 app.register(protectedRoutes);
 app.register(publicRoutes);
+
+app.register(fastifyStatic, {
+  root: path.join("/app/uploads/images"),
+  prefix: "/images/", // URL prefix to access files
+});
 
 app.setErrorHandler(errorHandler);
 

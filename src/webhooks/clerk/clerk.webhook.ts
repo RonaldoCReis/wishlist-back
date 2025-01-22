@@ -109,8 +109,6 @@ export const ClerkWebhook = async (app: FastifyInstance) => {
         }
         await UserService.update(typedEvt.data.id, {
           name: `${typedEvt.data.first_name} ${typedEvt.data.last_name}`,
-          profileImageUrl: typedEvt.data.image_url,
-          username: typedEvt.data.username,
         });
       } else {
         return void res.status(400).send({

@@ -1,11 +1,15 @@
+import fs from "fs";
 import {
   NewUser,
   UpdateUser,
+  UpdateUserImage,
   User,
   Users,
 } from "@ronaldocreis/wishlist-schema";
 import { BadRequest, NotFound } from "../../errors/classes";
 import { UserRepository } from "./user.repository";
+import { MultipartFile } from "@fastify/multipart";
+import path from "path";
 
 const findAll = async ({ query }: { query?: string }): Promise<Users> => {
   const users = await UserRepository.findAll({ query });
@@ -76,6 +80,30 @@ const update = async (id: User["id"], data: UpdateUser) => {
   return updatedUser;
 };
 
+const updateUserImage = async (id: User["id"], data: MultipartFile) => {
+  const uploadDir = "/app/uploads/images";
+  const fileExtension = path.extname(data.filename); // Get file extension (e.g., .jpg, .png)
+  const newFileName = `${id}${fileExtension}`; // Rename file to user ID
+
+  const filePath = path.join(uploadDir, newFileName);
+
+  // Ensure the directory exists
+  fs.mkdirSync(uploadDir, { recursive: true });
+
+  // Save the file
+  const fileStream = fs.createWriteStream(filePath);
+  await data.file.pipe(fileStream);
+
+  console.log(`File saved to: ${filePath}`);
+
+  // Return the accessible image URL
+  const imageUrl = `${process.env.BASE_URL}/images/${newFileName}`;
+
+  const updatedUser = await UserRepository.updateUserImage(id, imageUrl);
+
+  return { imageUrl, updatedUser };
+};
+
 export const UserService = {
   findAll,
   findById,
@@ -83,4 +111,5 @@ export const UserService = {
   create,
   remove,
   update,
+  updateUserImage,
 };

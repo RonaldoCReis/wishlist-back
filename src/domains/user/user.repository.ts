@@ -25,7 +25,13 @@ const remove = (id: User["id"]) => prisma.user.delete({ where: { id } });
 const update = (id: User["id"], data: UpdateUser) =>
   prisma.user.update({
     where: { id },
-    data,
+    data: { ...data },
+  });
+
+const updateUserImage = (id: User["id"], profileImageUrl: string) =>
+  prisma.user.update({
+    where: { id },
+    data: { profileImageUrl },
   });
 
 export const UserRepository = {
@@ -35,4 +41,5 @@ export const UserRepository = {
   create,
   remove,
   update,
+  updateUserImage,
 };

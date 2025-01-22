@@ -25,6 +25,8 @@ services:
             - node_modules/
         - action: rebuild
           path: package.json
+    volumes:
+      - ./uploads:/app/uploads
     ports:
       - "3333:3333"
     depends_on:
