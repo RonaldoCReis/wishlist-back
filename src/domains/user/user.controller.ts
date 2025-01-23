@@ -111,14 +111,11 @@ export const UserController = async (app: FastifyInstance) => {
   );
 
   app.withTypeProvider<ZodTypeProvider>().put(
-    "/:id",
+    "/",
     {
       schema: {
-        summary: "Update user by ID",
+        summary: "Update user",
         tags: ["Users"],
-        params: z.object({
-          id: UserSchema.shape.id,
-        }),
         body: UpdateUserSchema,
         response: {
           200: UserSchema,
@@ -133,10 +130,8 @@ export const UserController = async (app: FastifyInstance) => {
       if (!userId) {
         throw new Unauthorized();
       }
-      if (req.params.id !== userId) {
-        throw new Forbidden("Only the user can update their account");
-      }
-      const updatedUser = await UserService.update(req.params.id, req.body);
+
+      const updatedUser = await UserService.update(userId, req.body);
       const user = await UserService.findByUsername(updatedUser.username);
       res.status(200).send(user);
     }
