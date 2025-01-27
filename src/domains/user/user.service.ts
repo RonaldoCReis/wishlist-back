@@ -2,7 +2,6 @@ import fs from "fs";
 import {
   NewUser,
   UpdateUser,
-  UpdateUserImage,
   User,
   Users,
 } from "@ronaldocreis/wishlist-schema";
