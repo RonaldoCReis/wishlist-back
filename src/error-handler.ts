@@ -55,7 +55,5 @@ export const errorHandler: FastifyErrorHandler = (error, request, reply) => {
     return reply.status(404).send({ message: error.message });
   }
 
-  if (error instanceof Error) {
-    return reply.status(500).send({ message: error.message });
-  }
+  return reply.status(500).send({ message: error.message });
 };
