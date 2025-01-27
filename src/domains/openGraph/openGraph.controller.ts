@@ -1,4 +1,3 @@
-import { OpenGraph } from "@ronaldocreis/wishlist-schema";
 import { FastifyInstance } from "fastify";
 import { ZodTypeProvider } from "fastify-type-provider-zod";
 import ogs from "open-graph-scraper";

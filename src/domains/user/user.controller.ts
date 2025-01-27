@@ -1,13 +1,10 @@
 import { FastifyInstance, FastifyPluginCallback } from "fastify";
 import { ZodTypeProvider } from "fastify-type-provider-zod";
 import z from "zod";
-import path from "path";
-import fs from "fs";
 import { UserService } from "./user.service";
 import Multipart from "@fastify/multipart";
 import {
   NewUserSchema,
-  UpdateUserImageSchema,
   UpdateUserSchema,
   UserSchema,
   UsersQuerySchema,
