@@ -48,7 +48,7 @@ export const ClerkWebhook = async (app: FastifyInstance) => {
 
       // If there are no headers, error out
       if (!svix_id || !svix_timestamp || !svix_signature) {
-        return void res.status(400).send({
+        return res.status(400).send({
           success: false,
           message: "Error: Missing svix headers",
         });
@@ -70,7 +70,7 @@ export const ClerkWebhook = async (app: FastifyInstance) => {
         });
       } catch (err) {
         console.log("Error: Could not verify webhook:", (err as Error).message);
-        return void res.status(400).send({
+        return res.status(400).send({
           success: false,
           message: (err as Error).message,
         });
@@ -111,13 +111,13 @@ export const ClerkWebhook = async (app: FastifyInstance) => {
           name: `${typedEvt.data.first_name} ${typedEvt.data.last_name}`,
         });
       } else {
-        return void res.status(400).send({
+        return res.status(400).send({
           success: false,
           message: "Invalid event type",
         });
       }
 
-      return void res.status(200).send({
+      return res.status(200).send({
         success: true,
         message: "Webhook received",
       });
