@@ -45,7 +45,7 @@ app.register(fastifySwagger, {
 });
 app.register(clerkPlugin);
 
-const protectedRoutes: FastifyPluginCallback = async (app) => {
+const protectedRoutes: FastifyPluginCallback = (app) => {
   app.addHook("preHandler", (request, reply, done) => {
     const auth = getAuth(request);
     if (!auth.userId) {
@@ -56,7 +56,7 @@ const protectedRoutes: FastifyPluginCallback = async (app) => {
   });
 };
 
-const publicRoutes: FastifyPluginCallback = async (app) => {
+const publicRoutes: FastifyPluginCallback = (app) => {
   app.register(fastifySwaggerUi, {
     routePrefix: "/docs",
   });
@@ -78,7 +78,7 @@ app.register(fastifyStatic, {
 
 app.setErrorHandler(errorHandler);
 
-app.get("/", async (req, res) => {
+app.get("/", (req, res) => {
   res.send("Wishlist API");
 });
 

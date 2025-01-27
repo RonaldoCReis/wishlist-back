@@ -11,7 +11,7 @@ import { UserService } from "../../domains/user/user.service";
 import { BadRequest } from "../../errors/classes";
 import z from "zod";
 
-export const ClerkWebhook = async (app: FastifyInstance) => {
+export const ClerkWebhook = (app: FastifyInstance) => {
   app.withTypeProvider<ZodTypeProvider>().post(
     "/clerk",
     {

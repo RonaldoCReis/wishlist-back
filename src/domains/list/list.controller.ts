@@ -13,7 +13,7 @@ import {
   UpdateListSchema,
 } from "@ronaldocreis/wishlist-schema";
 
-export const ListController = async (app: FastifyInstance) => {
+export const ListController = (app: FastifyInstance) => {
   app.withTypeProvider<ZodTypeProvider>().get(
     "/",
     {

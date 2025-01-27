@@ -3,7 +3,7 @@ import { ZodTypeProvider } from "fastify-type-provider-zod";
 import ogs from "open-graph-scraper";
 import z from "zod";
 
-export const OpenGraphController = async (app: FastifyInstance) => {
+export const OpenGraphController = (app: FastifyInstance) => {
   app.withTypeProvider<ZodTypeProvider>().get(
     "/",
     {

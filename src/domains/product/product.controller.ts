@@ -14,7 +14,7 @@ import {
   UpdateProductSchema,
 } from "@ronaldocreis/wishlist-schema";
 
-export const ProductController = async (app: FastifyInstance) => {
+export const ProductController = (app: FastifyInstance) => {
   app.withTypeProvider<ZodTypeProvider>().get(
     "/",
     {

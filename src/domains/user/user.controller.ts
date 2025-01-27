@@ -13,7 +13,7 @@ import {
 import { getAuth } from "@clerk/fastify";
 import { Forbidden, Unauthorized } from "../../errors/classes";
 
-export const UserController = async (app: FastifyInstance) => {
+export const UserController = (app: FastifyInstance) => {
   app.withTypeProvider<ZodTypeProvider>().get(
     "/",
     {
@@ -134,7 +134,7 @@ export const UserController = async (app: FastifyInstance) => {
     }
   );
 
-  const imageUpload: FastifyPluginCallback = async (app) => {
+  const imageUpload: FastifyPluginCallback = (app) => {
     app.register(Multipart);
 
     app.withTypeProvider<ZodTypeProvider>().patch(
